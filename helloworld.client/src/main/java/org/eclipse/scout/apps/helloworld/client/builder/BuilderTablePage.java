@@ -2,21 +2,29 @@ package org.eclipse.scout.apps.helloworld.client.builder;
 
 import org.eclipse.scout.apps.helloworld.client.builder.BuilderTablePage.Table;
 import org.eclipse.scout.apps.helloworld.shared.builder.BuilderTablePageData;
+import org.eclipse.scout.apps.helloworld.client.builder.BuilderTableCustomizer;
 import org.eclipse.scout.apps.helloworld.shared.builder.IBuilderService;
 import org.eclipse.scout.rt.client.dto.Data;
 import org.eclipse.scout.rt.client.ui.basic.table.AbstractTable;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
+import org.eclipse.scout.rt.client.ui.basic.table.columns.IColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.customizer.ITableCustomizer;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
 import org.eclipse.scout.rt.platform.BEANS;
 import org.eclipse.scout.rt.platform.Order;
+import org.eclipse.scout.rt.platform.util.collection.OrderedCollection;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
 @Data(BuilderTablePageData.class)
 public class BuilderTablePage extends AbstractPageWithTable<Table> {
 
-	protected String pageName = new String();
+	protected String pageName;
+		
+	public BuilderTablePage() {
+		
+		this("default_pageName");
+	}
 	
 	public BuilderTablePage(String pageName) {
 	
@@ -36,16 +44,15 @@ public class BuilderTablePage extends AbstractPageWithTable<Table> {
 	
 	public class Table extends AbstractTable {
 		
-		public Table() {
-			super();
-		}
+		OrderedCollection<IColumn<?>> columnList;
 		
 		@Override
 		protected ITableCustomizer createTableCustomizer() {
+			
 			return new BuilderTableCustomizer();
-		}
+		}		
 
-		public CityColumn getCityColumn() {
+		public CityColumn getCityColumn() {			
 			return getColumnSet().getColumnByClass(CityColumn.class);
 		}
 
@@ -77,7 +84,6 @@ public class BuilderTablePage extends AbstractPageWithTable<Table> {
 			protected int getConfiguredWidth() {
 				return 100;
 			}
-		}
-
+		}	
 	}
 }
